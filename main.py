@@ -1,5 +1,8 @@
-from database.conexao import conectar
+from views.login import LoginView
 
-conexao = conectar()
+def main():
+    login = LoginView()
+    login.iniciar()
 
-print(conexao)
+if __name__ == "__main__":
+    main()

@@ -1,40 +1,50 @@
 import customtkinter as ctk
-import getpass
-
-# Configuração do tema
-ctk.set_appearance_mode("dark")
-ctk.set_default_color_theme("blue")
-
-# Janela principal
-janela = ctk.CTk()
-janela.title("Loguin")
-janela.geometry("500x300")
-janela.minsize(100, 100)
-
-# Caixa de usuário
-usuario = ctk.CTkEntry(
-    janela,
-    placeholder_text="Usuário",
-    width=250
-)
-usuario.pack(pady=40)
-
-# Caixa de senha
-senha = ctk.CTkEntry(
-    janela,
-    placeholder_text="Senha",
-    show="*",
-    width=250
-)
-senha.pack(pady=10)
-
-# Botão entrar
-botao = ctk.CTkButton(
-    janela,
-    text="Entrar",
-    width=250
-)
-botao.pack(pady=20)
+from controllers.login_controller import validar_acesso
 
 
-janela.mainloop()
+class LoginView:
+
+    def __init__(self):
+
+        ctk.set_appearance_mode("dark")
+        ctk.set_default_color_theme("blue")
+
+        self.janela = ctk.CTk()
+        self.janela.title("Login")
+        self.janela.geometry("500x300")
+        self.janela.minsize(100, 100)
+
+        self.usuario = ctk.CTkEntry(
+            self.janela,
+            placeholder_text="Usuário",
+            width=250
+        )
+        self.usuario.pack(pady=40)
+
+        self.senha = ctk.CTkEntry(
+            self.janela,
+            placeholder_text="Senha",
+            show="*",
+            width=250
+        )
+        self.senha.pack(pady=10)
+
+        self.botao = ctk.CTkButton(
+            self.janela,
+            text="Entrar",
+            width=250,
+            command=self.realizar_login
+        )
+        self.botao.pack(pady=20)
+
+    def realizar_login(self):
+
+        usuario = self.usuario.get()
+        senha = self.senha.get()
+
+        resultado = validar_acesso(usuario, senha)
+
+        print(resultado)
+
+    def iniciar(self):
+        self.janela.mainloop()
