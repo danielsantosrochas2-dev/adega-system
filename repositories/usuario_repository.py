@@ -43,7 +43,8 @@ def listar_usuarios():
     cursor.execute("""
     SELECT usuario
     FROM usuarios
-    WHERE ativo = 1""")
+    WHERE ativo = 1
+    ORDER BY usuario""")
 
     lista_de_usuarios = cursor.fetchall()
 
