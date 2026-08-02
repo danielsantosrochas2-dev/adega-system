@@ -4,18 +4,24 @@ from database.conexao import conectar
 
 def cadastrar_produto(nome, categoria_id, codigo_interno, codigo_barras, preco_compra, preco_venda, estoque, estoque_minimo, controla_dose, doses_por_unidade, controla_validade, data_validade):
 
-    conexao = conectar()
-    cursor = conexao.cursor()
+    try:
+        conexao = conectar()
+        cursor = conexao.cursor()
 
-    cursor.execute("""
-    INSERT INTO produtos (nome, categoria_id, codigo_interno, codigo_barras, preco_compra, preco_venda, estoque, estoque_minimo, controla_dose, doses_por_unidade, controla_validade, data_validade, ativo)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1)
-    """, (nome, categoria_id, codigo_interno, codigo_barras, preco_compra, preco_venda, estoque, estoque_minimo, controla_dose, doses_por_unidade, controla_validade, data_validade))
+        cursor.execute("""
+        INSERT INTO produtos (nome, categoria_id, codigo_interno, codigo_barras, preco_compra, preco_venda, estoque, estoque_minimo, controla_dose, doses_por_unidade, controla_validade, data_validade, ativo)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1)
+        """, (nome, categoria_id, codigo_interno, codigo_barras, preco_compra, preco_venda, estoque, estoque_minimo, controla_dose, doses_por_unidade, controla_validade, data_validade))
+        conexao.commit()
+        return True
 
-    conexao.commit()
-    conexao.close()
+    except Exception as erro:
+        print(erro)
+        return False
 
-    return True
+    finally:
+        if conexao:
+            conexao.close()
 
 # Buscar produto por id
 
