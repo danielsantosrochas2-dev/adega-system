@@ -99,3 +99,19 @@ def alterar_status_usuario(id, ativo):
 
     return True
 
+# Busca de usuario por id
+
+def busca_usuario_id(id):
+
+    conexao = conectar()
+    cursor = conexao.cursor()
+
+    cursor.execute("""
+    SELECT * FROM usuarios
+    WHERE id = ?
+    """, (id))
+
+    usuario = cursor.fetchone()
+    cursor.close()
+
+    return usuario
