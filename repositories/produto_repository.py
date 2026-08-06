@@ -168,6 +168,40 @@ def busca_produtos_proximo_vencidos():
 
     return produtos
 
+# Consulta de estoque para atualização de estoque 
+
+def consulta_estoque_pra_atualizacao(id):
+
+    conexao = conectar()
+    cursor = conexao.cursor()
+
+    cursor.execute("""
+    SELECT estoque FROM produtos
+    WHERE id = ?
+    """, (id,))
+
+    estoque = cursor.fetchone()
+    conexao.close()
+
+    return estoque
+
+# Atualizar quantidade estoque
+
+def atualizar_quantidade_estoque(id, estoque):
+
+    conexao = conectar()
+    cursor = conexao.cursor()
+
+    cursor.execute("""
+    UPDATE produtos 
+    SET estoque = ?
+    WHERE id = ?
+    """, (estoque, id))
+
+    conexao.commit()
+    conexao.close()
+
+    return True
 
 
 
