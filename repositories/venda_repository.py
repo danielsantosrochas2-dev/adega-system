@@ -97,3 +97,108 @@ def cancelar_venda(venda_id):
 
     return True
 
+# Buscar venda por ID
+
+def busca_venda_id(venda_id):
+
+    conexao = conectar()
+    cursor = conexao.cursor()
+
+    cursor.execute("""
+    SELECT * FROM vendas
+    WHERE id = ?
+    """, (venda_id,))
+
+    venda = cursor.fetchone()
+    conexao.close()
+
+    return venda
+
+# Listar Vendas
+
+def listar_vendas():
+
+    conexao = conectar()
+    cursor = conexao.cursor()
+
+    cursor.execute("""
+    SELECT * FROM vendas
+    ORDER BY data_hora 
+    """)
+
+    lista_vendas = cursor.fetchall()
+    conexao.close()
+
+    return lista_vendas
+
+# Busca de vendas por usuario
+
+def busca_vendas_por_usuario(usuario_id):
+
+    conexao = conectar()
+    cursor = conexao.cursor()
+
+    cursor.execute("""
+    SELECT * FROM  vendas
+    WHERE usuario_id = ?
+    ORDER BY data_hora
+    """, (usuario_id,))
+
+    vendas = cursor.fetchall()
+    conexao.close()
+
+    return vendas
+
+# Busca de vendas por periodo
+
+def busca_vendas_periodo(data_inicial, data_final):
+
+    conexao = conectar()
+    cursor = conexao.cursor()
+
+    cursor.execute("""
+    SELECT * FROM vendas
+    WHERE data_hora BETWEEN ? AND ?
+    ORDER BY data_hora DESC
+    """, (data_inicial, data_final,))
+
+    vendas_periodo = cursor.fetchall()
+    conexao.close()
+
+    return vendas_periodo
+
+# Atualizar valor total da venda
+
+def atualizar_valor_total_venda(venda_id, valor_total, valor_desconto):
+
+    conexao = conectar()
+    cursor = conexao.cursor()
+
+    cursor.execute("""
+    UPDATE vendas
+    SET valor_total = ?,
+    valor_desconto = ?
+    WHERE id = ?
+    """, (valor_total, valor_desconto, venda_id))
+
+    conexao.commit()
+    conexao.close()
+
+    return True
+
+# Buscar itens venda na tabela - Itens_venda
+
+def buscar_itens_venda(venda_id):
+
+    conexao = conectar()
+    cursor = conexao.cursor()
+
+    cursor.execute("""
+    SELECT * FROM itens_venda
+    WHERE venda_id = ?
+    """, (venda_id,))
+
+    itens = cursor.fetchall()
+    conexao.close()
+
+    return itens
