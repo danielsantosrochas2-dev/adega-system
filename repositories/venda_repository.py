@@ -63,16 +63,17 @@ def remover_item_da_venda(item_venda_id):
 
 # Finalizar a venda
 
-def finalizar_venda(venda_id, status):
+def finalizar_venda(venda_id, status, forma_pagamento):
 
     conexao = conectar()
     cursor = conexao.cursor()
 
     cursor.execute("""
     UPDATE vendas
-    SET status = ?
+    SET status = ?,
+     forma_pagamento = ?
     WHERE id = ?
-    """, (status, venda_id))
+    """, (status, forma_pagamento, venda_id))
 
     conexao.commit()
     conexao.close ()

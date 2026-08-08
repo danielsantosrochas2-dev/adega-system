@@ -1,5 +1,5 @@
 from repositories.venda_repository import nova_venda, adicionar_item_na_venda, busca_venda_id, cancelar_venda, finalizar_venda, remover_item_da_venda, atualizar_valor_total_venda, buscar_itens_venda
-from repositories.movimentacao_repository import registro_saida_estoque
+from repositories.movimentacao_repository import registro_saida_estoque, registro_entrada_estoque
 from repositories.produto_repository import busca_produto_id, atualizar_quantidade_estoque
 from datetime import datetime
 
@@ -84,3 +84,70 @@ def calcular_desconto_total_venda(venda_id):
         desconto += item[7]
 
     return desconto
+
+# Remover produto
+
+def remover_produto(venda_id, usuario_id):
+
+    item_venda_id = buscar_itens_venda(venda_id)
+
+    if not item_venda_id:
+        return "Produto não localizado"
+
+    data_hora = datetime.now()
+    item = item_venda_id[0][0]
+    produto_atualizar = item_venda_id[0][2]
+    estoque = item_venda_id[0][3]
+
+    remover_item_da_venda(item)
+    atualizar_quantidade_estoque(produto_atualizar, estoque)
+    registro_entrada_estoque(produto_atualizar, usuario_id, estoque, "Entrada - Cancelamento Item", data_hora)
+    total = calcular_total_venda(venda_id)
+    desconto = calcular_desconto_total_venda(venda_id)
+    atualizar_valor_total_venda(
+        venda_id,
+        total,
+        desconto
+    )
+
+    return "Produto cancelado!"
+
+# Finalizar venda
+
+def finalizar_venda_control(venda_id, forma_pagamento):
+
+    venda_fim = busca_venda_id(venda_id)
+
+    if venda_fim is None:
+        return "Venda não localizada"
+
+    status = "FECHADA"
+
+    finalizar_venda(venda_id, status, forma_pagamento)
+
+    return "Venda Finalizada!"
+
+# Cancelar venda 
+
+def cancelar_venda_control(venda_id, usuario_id):
+
+    venda_cancelar = busca_venda_id(venda_id)
+
+    if venda_cancelar[0] is None:
+        return "Venda não localizada"
+
+
+    produto = buscar_itens_venda(venda_cancelar[0])
+    data_hora = datetime.now()
+
+    for produtos in produto:
+        produto_atualizar = produtos[2]
+        estoque = produtos[3]
+        atualizar_quantidade_estoque(produto_atualizar, estoque)
+        registro_entrada_estoque(produto_atualizar, usuario_id, estoque, "Entrada - Cancelamento", data_hora)
+
+    cancelar_venda(venda_cancelar[0])
+    return True
+
+
+
