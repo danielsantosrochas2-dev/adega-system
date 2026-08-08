@@ -42,15 +42,15 @@ def adicionar_item_na_venda(venda_id, produto_id, quantidade, preco_unitario, su
 
 # Remover item da venda 
 
-def remover_item_da_venda(item_venda_id):
+def remover_item_da_venda(produto_id, venda_id):
 
     conexao = conectar()
     cursor = conexao.cursor()
 
     cursor.execute("""
     DELETE FROM itens_venda
-    WHERE id = ?
-    """, (item_venda_id,))
+    WHERE produto_id = ? AND venda_id = ?
+    """, (produto_id, venda_id))
 
 
     conexao.commit()
@@ -71,7 +71,7 @@ def finalizar_venda(venda_id, status, forma_pagamento):
     cursor.execute("""
     UPDATE vendas
     SET status = ?,
-     forma_pagamento = ?
+    forma_pagamento = ?
     WHERE id = ?
     """, (status, forma_pagamento, venda_id))
 
@@ -91,7 +91,7 @@ def cancelar_venda(venda_id):
     UPDATE vendas
     SET status = ?
     WHERE id = ?
-    """, ("Cancelada", venda_id))
+    """, ("CANCELADA", venda_id))
 
     conexao.commit()
     conexao.close ()
@@ -203,3 +203,37 @@ def buscar_itens_venda(venda_id):
     conexao.close()
 
     return itens
+
+# Buscar coluna produto especifico na coluna produto id
+
+def busca_produto_unico(venda_id):
+
+    conexao = conectar()
+    cursor = conexao.cursor()
+    
+    cursor.execute("""
+    SELECT produto_id FROM itens_venda
+    WHERE venda_id = ?
+    """, (venda_id,))
+    
+    produto = cursor.fetchone()
+    conexao.close()
+    
+    return produto
+
+# Busca estoque produto 
+
+def busca_quantidade_produto(venda_id):
+
+    conexao = conectar()
+    cursor = conexao.cursor()
+    
+    cursor.execute("""
+    SELECT quantidade FROM itens_venda
+    WHERE venda_id = ?
+    """, (venda_id,))
+    
+    estoque = cursor.fetchone()
+    conexao.close()
+    
+    return estoque

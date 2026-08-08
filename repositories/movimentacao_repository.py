@@ -3,7 +3,7 @@ from datetime import datetime
 data_hora = datetime.now()
 # Registrar entrada no estoque
 
-def registro_entrada_estoque(produto_id, usuario_id, quantidade, motivo, data_hora):
+def registro_entrada_estoque(produto_id, usuario_id, quantidade, motivo, data_hora, venda_id):
 
     conexao = None
 
@@ -14,7 +14,7 @@ def registro_entrada_estoque(produto_id, usuario_id, quantidade, motivo, data_ho
         cursor.execute("""
         INSERT INTO movimentacoes_estoque (produto_id, usuario_id, tipo_movimentacao, quantidade, motivo, data_hora, venda_id)
         VALUES (?, ?, ?, ?, ?, ?, ?)
-        """, (produto_id, usuario_id, "Entrada", quantidade, motivo, data_hora, None))
+        """, (produto_id, usuario_id, "Entrada", quantidade, motivo, data_hora, venda_id))
         conexao.commit()
         return True
 
