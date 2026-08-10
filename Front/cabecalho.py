@@ -2,7 +2,7 @@ from datetime import datetime
 import customtkinter as ctk
 import getpass
 
-import parametro as p
+from Front import parametro as p
 
 
 # ==========================================

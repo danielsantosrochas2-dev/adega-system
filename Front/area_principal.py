@@ -3,7 +3,7 @@ import os
 import customtkinter as ctk
 from PIL import Image
 
-import parametro as p
+from Front import parametro as p
 
 
 # ==========================================

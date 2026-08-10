@@ -1,12 +1,12 @@
 import customtkinter as ctk
 
-import parametro as p
+from Front import parametro as p
 
-from cabecalho import Cabecalho
-from conteudo import Conteudo
-from menu_lateral import MenuLateral
-from area_principal import AreaPrincipal
-from rodape import Rodape
+from Front.cabecalho import Cabecalho
+from Front.conteudo import Conteudo
+from Front.menu_lateral import MenuLateral
+from Front.area_principal import AreaPrincipal
+from Front.rodape import Rodape
 
 
 # ==========================================
@@ -61,4 +61,5 @@ class SistemaMercado(ctk.CTk):
 # ==========================================
 app = SistemaMercado()
 
-app.mainloop()
+if __name__ == "__main__":
+    app.mainloop()

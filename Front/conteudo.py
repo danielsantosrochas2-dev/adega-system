@@ -1,6 +1,6 @@
 import customtkinter as ctk
 
-import parametro as p
+from Front import parametro as p
 
 
 # ==========================================

@@ -1,4 +1,4 @@
-from views.login import LoginView
+from Front.login import LoginView
 
 def main():
     login = LoginView()

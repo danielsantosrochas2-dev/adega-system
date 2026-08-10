@@ -1,50 +1,60 @@
 import customtkinter as ctk
-from controllers.login_controller import validar_acesso
-
+import getpass
 
 class LoginView:
 
-    def __init__(self):
+        def __init__(self):
 
-        ctk.set_appearance_mode("dark")
-        ctk.set_default_color_theme("blue")
+         ctk.set_appearance_mode("dark")
+         ctk.set_default_color_theme("blue")
 
-        self.janela = ctk.CTk()
-        self.janela.title("Login")
-        self.janela.geometry("500x300")
-        self.janela.minsize(100, 100)
+         self.janela = ctk.CTk()
+         self.janela.title("Login")
+         self.janela.geometry("500x300")
+         self.janela.minsize(100, 100)
 
-        self.usuario = ctk.CTkEntry(
+         self.usuario = ctk.CTkEntry(
             self.janela,
             placeholder_text="Usuário",
             width=250
-        )
-        self.usuario.pack(pady=40)
+         )
+         self.usuario.pack(pady=40)
 
-        self.senha = ctk.CTkEntry(
+         self.senha = ctk.CTkEntry(
             self.janela,
             placeholder_text="Senha",
             show="*",
             width=250
-        )
-        self.senha.pack(pady=10)
+         )
+         self.senha.pack(pady=10)
 
-        self.botao = ctk.CTkButton(
+         self.botao = ctk.CTkButton(
             self.janela,
             text="Entrar",
             width=250,
             command=self.realizar_login
-        )
-        self.botao.pack(pady=20)
+         )
+         self.botao.pack(pady=20)
+    
+        def realizar_login(self):
 
-    def realizar_login(self):
+         from controllers.login_controller import validar_acesso
+         usuario = self.usuario.get()
+         senha = self.senha.get()
+         resultado = validar_acesso(usuario, senha)
+         print(resultado)
 
-        usuario = self.usuario.get()
-        senha = self.senha.get()
+def menu():
+    from Front.Caixa_Front import SistemaMercado
+    resultado = LoginView()
+    resultado.realizar_login()
 
-        resultado = validar_acesso(usuario, senha)
+    if resultado == "Acesso Liberado":
+     menu = SistemaMercado()
+     menu.iniciar()
 
-        print(resultado)
+if __name__ == "__login__":
+     menu()
 
-    def iniciar(self):
-        self.janela.mainloop()
+def iniciar(self):
+    self.janela.mainloop()
